@@ -26,7 +26,7 @@ CREATE TABLE FavoriteRecipes (
 CREATE TABLE PrivateRecipes (
     recipe_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id VARCHAR(255) NOT NULL,
-    image TEXT,
+    imageUrl VARCHAR(255) NOT NULL,
     title VARCHAR(255),
     minutes INT,
     popularity INT DEFAULT 0,

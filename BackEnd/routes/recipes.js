@@ -35,7 +35,7 @@ router.get("/threeRandom",async(req,res,next)=>{
   // } catch (error) {
   //   next(error);
   // }
-  res.send(getResult().slice(0,3))
+  res.send(getResult().slice(0,4))
   return 
 }
 );

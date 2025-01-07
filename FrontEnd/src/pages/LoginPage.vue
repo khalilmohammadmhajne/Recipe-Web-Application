@@ -93,7 +93,6 @@ export default {
     },
     async Login() {
       try {
-        console.log('Attempting login');
         // Construct the API endpoint
         const apiEndpoint = this.$root.store.server_domain 
           ? `${this.$root.store.server_domain}/Login` 
@@ -105,11 +104,9 @@ export default {
           password: this.form.password
         });
 
-        console.log('Login successful', response.data);
-
         // Call the login method from your store and navigate to home
         this.$root.store.login(this.form.username);
-        // this.$router.push("/");
+        this.$router.push("/");
       } catch (err) {
         console.error('Login error', err);
         
@@ -135,8 +132,11 @@ export default {
 <style lang="scss" scoped>
 .container {
   max-width: 400px;
-  padding-top:20px;
-  margin-top: auto;
+  padding-top: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 </style>

@@ -13,18 +13,8 @@
         class="recipe-image" 
         alt="Recipe image" 
       />
-    </div>
-    <div class="recipe-footer">
-      <strong class="recipe-label">Recipe</strong>
-      <div :title="recipe.title" class="recipe-title">{{ recipe.title }}</div>
-      <div class="footer-details">
-        <ul class="recipe-overview">
-          <li>{{ recipe.readyInMinutes }} minutes</li>
-          <div v-if="title !== 'Family Recipes'" class="recipe-popularity">
-            <span class="popularity-count">{{ recipe.popularity }}</span>
-            <p class="like-text">likes</p>
-          </div>
-        </ul>
+      <div class="recipe-hover">
+        <span class="hover-text">{{ recipe.title }}</span>
       </div>
     </div>
   </router-link>
@@ -42,7 +32,7 @@ export default {
   data() {
     return {
       imageLoaded: false,
-      imageSrc: 'data:image/png;base64,' + this.recipe.image,
+      imageSrc: '',
     };
   },
   props: {
@@ -64,107 +54,56 @@ export default {
   width: 100%;
   position: relative;
   padding: 0;
+  overflow: hidden; /* Prevent overflow issues */
+  border-radius: 8px; /* Optional: Add rounded corners */
+  text-decoration: none; /* Remove link styling */
 }
 
 .recipe-body {
   width: 100%;
   position: relative;
+  aspect-ratio: 16 / 9; /* Maintain a consistent aspect ratio */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Ensure no content overflows */
+  background-color: #f9f9f9; /* Placeholder for image loading */
 }
 
 .recipe-image {
   display: block;
   width: 100%;
-  height: auto;
-  margin: 0 auto;
-  object-fit: cover;
+  height: 100%;
+  object-fit: cover; /* Ensure images fill the container without distortion */
+  transition: opacity 0.3s ease;
 }
 
-.recipe-footer {
+.recipe-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.recipe-label {
-  color: #f93f23;
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-
-.recipe-title {
-  color: rgb(60, 59, 59);
-  font: bold 1.25rem/1.5rem "Source Serif Pro", serif;
-  padding: 0;
-  font-size: 1.5rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.footer-details {
-  margin-top: 15px;
-}
-
-.recipe-overview {
-  list-style: none;
-  padding: 0;
+  height: 100%;
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.recipe-overview li {
-  font-size: 1rem;
-  text-align: left;
-  color: #555;
-}
-
-.recipe-popularity {
-  display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  color: #f93f23;
+  background: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay */
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.3s ease;
 }
 
-.popularity-count {
+.hover-text {
+  color: #fff;
+  font-size: 1.5rem;
   font-weight: bold;
-  margin-right: 5px;
+  text-align: center;
 }
 
-.like-text {
-  color: rgb(104, 104, 104);
-  font-size: 0.875rem;
-  margin-left: 5px;
+.recipe-preview:hover .recipe-hover {
+  opacity: 1; /* Show the overlay on hover */
 }
 
-a,
-u {
-  color: inherit;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-@media (max-width: 768px) {
-  .recipe-footer {
-    padding: 8px;
-  }
-
-  .recipe-title {
-    font-size: 1.25rem;
-  }
-
-  .recipe-overview li {
-    font-size: 0.875rem;
-  }
-
-  .recipe-label {
-    font-size: 0.75rem;
-  }
+.recipe-preview:hover .recipe-image {
+  opacity: 0.7; /* Dim the image slightly on hover */
 }
 </style>

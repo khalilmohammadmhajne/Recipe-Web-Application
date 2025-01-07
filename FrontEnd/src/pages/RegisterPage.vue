@@ -306,8 +306,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
-   padding-top:20px;
-  margin-top: auto;
-  max-width: 500px;
+  max-width: 400px;
+  padding-top: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

@@ -2,7 +2,9 @@
   <div class="container">
   <div>
     <h1 class="title">Private Recipes </h1>
-    <b-button v-b-modal.modal-prevent-closing>Add Private Recipe</b-button>
+    <b-row class="justify-content-center my-4">
+      <b-button v-b-modal.modal-prevent-closing variant="primary">Add New Private Recipe</b-button>
+    </b-row>
     <b-modal
       id="modal-prevent-closing"
       ref="modal"
@@ -302,6 +304,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
+.title {
+  text-align: center;
+  margin: 0;
+  padding-top: 20px; /* Adjust the padding as needed */
+}
 
 .col{
   text-align: center;

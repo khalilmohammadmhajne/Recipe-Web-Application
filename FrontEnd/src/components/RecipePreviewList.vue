@@ -1,59 +1,82 @@
 <template>
   <b-container v-if="renderComponent">
-    <b-alert id = "alert" :show="dismissCountDown" dismissible variant="success" @dismissed="dismissCountDown=0" @dismiss-count-down="countDownChanged">
-        Recipe was added to favorite list successfully
+    <!-- Alert for Favorite Recipe Addition -->
+    <b-alert
+      id="alert"
+      :show="dismissCountDown"
+      dismissible
+      variant="success"
+      @dismissed="dismissCountDown = 0"
+      @dismiss-count-down="countDownChanged"
+    >
+      Recipe was added to favorite list successfully.
     </b-alert>
-    <b-row v-if="renderComponent" >
-      <v-if v-if="emptyResult"> No Result Found</v-if>
-      <b-col v-for="r in recipes" :key="r.id" class="card" >
-        <RecipePreview class="recipePreview" :recipe="r" :title="title" />
-        <div v-if="title == 'Random Recipes' || title=='Search Result'  || title=='Last Watched Recipes' " style="text-align:right;">
-          <a @click="showAlert();">
-            <b-icon class="addFav" 
-            :icon="isFavorite ? 'star-fill' : 'star'"
-            :style="{ color: isFavorite ? 'orange' : 'gray' }" 
-            @click="postFavoriteRecipes(r.id);"></b-icon>
-          </a>
-        </div >
-        <div v-else @click='setDelete(r.id)'  style="text-align:left;"> 
-            <img v-b-modal.modal-1 src="../assets/garbage.png" style="width:20px;" />
-        </div>
-      </b-col>
-      <b-col>
-        <div>
-          <b-modal id="modal-1" title="BootstrapVue" @ok = "handleOk">
-            <p class="my-4">Are you sure you want to remove this Recipe from favorite?</p>
-          </b-modal>
+
+    <!-- Recipes Section -->
+    <b-row>
+      <!-- Display message if no results found -->
+      <div v-if="emptyResult" class="empty-result">No Results Found</div>
+
+      <!-- Render Recipe Cards -->
+      <b-col
+        v-for="recipe in recipes"
+        :key="recipe.id"
+        cols="12" md="3" lg="3"
+        class="d-flex justify-content-center mb-4"
+      >
+        <div class="card">
+          <RecipePreview class="recipe-preview" :recipe="recipe" :title="title" />
+          <div class="card-actions">
+            <!-- Add to Favorites -->
+            <template v-if="['Random Recipes', 'Search Result', 'Last Watched Recipes'].includes(title)">
+              <b-icon
+                class="add-fav-icon"
+                :icon="isFavorite ? 'star-fill' : 'star'"
+                :style="{ color: isFavorite ? 'orange' : 'gray' }"
+                @click="handleFavorite(recipe.id)"
+              ></b-icon>
+            </template>
+            <!-- Delete Recipe -->
+            <template v-else>
+              <img
+                v-b-modal.modal-1
+                src="../assets/garbage.png"
+                alt="Delete Recipe"
+                class="delete-icon"
+                @click="setDelete(recipe.id)"
+              />
+            </template>
+          </div>
         </div>
       </b-col>
     </b-row>
-    <b-row v-if="title=='Random Recipes'"  @click="getRandomRecipes" >
-    <button style="background-color:#66a992; border:none; color:white;border-radius:10px;margin-top: 10px;margin-left: 2px;letter-spacing: 0.2em;">Randomize</button>
+
+    <!-- Randomize Button -->
+    <b-row v-if="title === 'Random Recipes'" class="randomize-row">
+      <button class="randomize-button" @click="getRandomRecipes">Randomize</button>
     </b-row>
+
+    <!-- Delete Confirmation Modal -->
+    <b-modal id="modal-1" title="Confirmation" @ok="handleOk">
+      <p>Are you sure you want to remove this recipe from your favorites?</p>
+    </b-modal>
   </b-container>
 </template>
+
 
 <script>
 import RecipePreview from "./RecipePreview.vue";
 import axios from "axios";
 
 // Configure Axios base URL
-axios.defaults.baseURL = "http://127.0.0.1:80"; // Change to your actual API base URL
+axios.defaults.baseURL = "http://127.0.0.1:80";
 
 export default {
   name: "RecipePreviewList",
-  components: {
-    RecipePreview,
-  },
+  components: { RecipePreview },
   props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    vertical: {
-      type: Boolean,
-      default: false,
-    },
+    title: { type: String, required: true },
+    vertical: { type: Boolean, default: false },
   },
   data() {
     return {
@@ -67,23 +90,14 @@ export default {
     };
   },
   mounted() {
-    switch (this.title) {
-      case "Random Recipes":
-        this.getRandomRecipes();
-        break;
-      case "Last Watched Recipes":
-        this.getLastWatchedRecipes();
-        break;
-      case "Favorite Recipes":
-        this.getFavoriteRecipes();
-        break;
-      case "Private Recipes":
-        this.getPrivateRecipes();
-        break;
-      case "Family Recipes":
-        this.getFamilyRecipes();
-        break;
-    }
+    const handlers = {
+      "Random Recipes": this.getRandomRecipes,
+      "Last Watched Recipes": this.getLastWatchedRecipes,
+      "Favorite Recipes": this.getFavoriteRecipes,
+      "Private Recipes": this.getPrivateRecipes,
+      "Family Recipes": this.getFamilyRecipes,
+    };
+    handlers[this.title]?.();
   },
   methods: {
     countDownChanged(dismissCountDown) {
@@ -92,31 +106,29 @@ export default {
     showAlert() {
       this.dismissCountDown = this.dismissSecs;
     },
-    async handleOk() {
-      if (this.title.includes("Favorite")) {
-        await this.deleteFavoriteRecipes(this.toDelete);
-        await this.getFavoriteRecipes();
-      } else if (this.title === "Private Recipes") {
-        await this.deletePrivateRecipes(this.toDelete);
-        await this.getPrivateRecipes();
-      } else if (this.title === "Family Recipes") {
-        await this.deleteFamilyRecipes(this.toDelete);
-        await this.getFamilyRecipes();
-      }
-      await this.forceRerender();
+    handleOk() {
+      const deleteHandlers = {
+        "Favorite Recipes": this.deleteFavoriteRecipes,
+        "Private Recipes": this.deletePrivateRecipes,
+        "Family Recipes": this.deleteFamilyRecipes,
+      };
+      deleteHandlers[this.title]?.(this.toDelete).then(this.forceRerender);
     },
-    setDelete(recipe_id) {
-      this.toDelete = recipe_id;
+    setDelete(recipeId) {
+      this.toDelete = recipeId;
     },
     async forceRerender() {
       this.renderComponent = false;
-      this.$nextTick(() => {
-        this.renderComponent = true;
-      });
+      await this.$nextTick();
+      this.renderComponent = true;
     },
-    async postFavoriteRecipes(Id) {
+    handleFavorite(recipeId) {
+      this.postFavoriteRecipes(recipeId);
+      this.showAlert();
+    },
+    async postFavoriteRecipes(recipeId) {
       try {
-        await axios.post("http://127.0.0.1:80/users/favorites", { recipeId: Id });
+        await axios.post("/users/favorites", { recipeId });
         this.isFavorite = true;
       } catch (error) {
         console.error(error);
@@ -156,57 +168,29 @@ export default {
     },
     async getLastWatchedRecipes() {
       try {
-        const { data } = await axios.get("http://127.0.0.1:80/users/watched");
+        const { data } = await axios.get("/users/watched");
         this.recipes = data || [];
       } catch (error) {
         console.error(error);
       }
     },
-    async deleteFavoriteRecipes(Id) {
+    async deleteFavoriteRecipes(recipeId) {
       try {
-        await axios.delete(`/users/favorite/${Id}`);
+        await axios.delete(`/users/favorite/${recipeId}`);
       } catch (error) {
         console.error(error);
       }
     },
-    async deletePrivateRecipes(Id) {
+    async deletePrivateRecipes(recipeId) {
       try {
-        await axios.delete(`/users/private/${Id}`);
+        await axios.delete(`/users/private/${recipeId}`);
       } catch (error) {
         console.error(error);
       }
     },
-    async deleteFamilyRecipes(Id) {
+    async deleteFamilyRecipes(recipeId) {
       try {
-        await axios.delete(`/users/family/${Id}`);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    async searchQuery(query, cusine, diet, intol, num, sortFilter) {
-      this.emptyResult = false;
-      this.recipes = [];
-
-      if (cusine === "ALL") cusine = undefined;
-      if (diet === "None") diet = undefined;
-      if (intol === "None") intol = undefined;
-
-      try {
-        const { data } = await axios.get("/recipes/search/", {
-          params: { query, cusine, intolerance: intol, diet, number: num },
-        });
-
-        if (data.length) {
-          this.recipes = data;
-
-          if (sortFilter === "Prepare Time") {
-            this.recipes.sort((a, b) => a.readyInMinutes - b.readyInMinutes);
-          } else if (sortFilter === "Stars") {
-            this.recipes.sort((a, b) => b.popularity - a.popularity);
-          }
-        } else {
-          this.emptyResult = true;
-        }
+        await axios.delete(`/users/family/${recipeId}`);
       } catch (error) {
         console.error(error);
       }
@@ -216,60 +200,104 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.alert{
-    position:fixed; 
-    top: 0px; 
-    left: 0px; 
-    width: 100%;
-    z-index:9999; 
-    border-radius:0px
+.alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  border-radius: 0;
 }
 
-.card{
-  
-  
-  min-height: 380px;
-  margin: 5px;
-  background-color: rgb(255, 255, 255);
-  padding-left: 0;
-  padding-right: 0;
+.card {
+  background-color: #fff;
   border: none;
-  max-width: 28%; 
-  min-width:28%;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 300px; /* Ensure consistency in card width */
 }
 
-col{
-
-  background-color: red;
+.recipe-preview {
+  width: 100%;
+  aspect-ratio: 16 / 9; /* Enforce a consistent aspect ratio */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Crop any overflow content */
+  border-radius: 8px; /* Optional: rounded corners */
+  background-color: #f9f9f9; /* Placeholder background */
+  margin-bottom: 10px;
 }
 
-.addFav{
-
-    position: absolute;
-        float:right;
-        font-size: 50px;
-        padding: 5px;
-        top: 0;
-        right:0;
-        color:rgba(255, 215, 0);
+.recipe-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensure the image fits within the container */
 }
 
-[class*="card"] {
-  min-width: 60%;
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
-@media only screen 
-and (min-device-width : 720px) 
- {
-  .card{
-    min-width: 27%;
-    max-width: 27%;
-   
-  }
-  
-/* Styles */
+.add-fav-icon {
+  font-size: 20px;
+  color: gray;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
+.add-fav-icon:hover {
+  color: orange;
+}
 
+.delete-icon {
+  width: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
 
+.delete-icon:hover {
+  transform: scale(1.1);
+}
+
+.empty-result {
+  text-align: center;
+  font-size: 16px;
+  color: gray;
+  margin-top: 20px;
+}
+
+.randomize-button {
+  background-color: #66a992;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  margin: 20px auto;
+  font-size: 14px;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+.randomize-button:hover {
+  background-color: #55987a;
+}
+
+.randomize-row {
+  text-align: center;
+  justify-content: center;
+}
 </style>
+
+

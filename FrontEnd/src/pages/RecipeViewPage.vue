@@ -2,6 +2,11 @@
   <b-container class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
     <b-row class="justify-content-center w-100">
       <b-col md="8" class="recipe-details">
+          <img 
+          :src="imageSrc" 
+          class="recipe-image" 
+          alt="Recipe image" 
+        />
         <!-- Recipe Title -->
         <h1 class="recipe-title">{{ recipe.title }}</h1>
         
@@ -50,56 +55,61 @@
 
 
   
-  <script>
-  import axios from "axios";
-  
-  export default {
-    name: "RecipeViewPage",
-    data() {
-      return {
-        recipe: {},
-        title:"",
-      };
-    },
-    created() {
-      this.fetchRecipeDetails();
-    },
-    methods: {
-      async fetchRecipeDetails() {
-        const recipeId = this.$route.params.recipeId; // Extract the recipeId from the URL
-        this.title = this.$route.params.title;
-        try {
-          if (this.title == "Private Recipes"){
-            const response = await axios.get(`http://127.0.0.1:80/users/private_recipe_info/${recipeId}`);
-            this.recipe = response.data;
-            
-          }
-          else if (this.title == "Family Recipes"){
-            const response = await axios.get(`http://127.0.0.1:80/users/family_recipe_info/${recipeId}`);
-            this.recipe = response.data;
-          }
-          else{
-            const response = await axios.get(`http://127.0.0.1:80/recipes/fullinfo/${recipeId}`); // Fetch recipe details
-            this.recipe = response.data; 
-            console.log(this.recipe)
-          }
-          
-        } catch (error) {
-          console.error("Error fetching recipe details:", error);
-        }
-      },
-    },
-    computed: {
-      ingredientsToDisplay() {
-        if (this.title === "Private Recipes" || this.title === "Family Recipes") {
-          return this.recipe.ingredients || [];
-        }
-        return this.recipe.extendedIngredients || [];
-      },
+<script>
+import axios from "axios";
+
+export default {
+  name: "RecipeViewPage",
+  data() {
+    return {
+      recipe: {},
+      title: "",
+      imageSrc: "",
+    };
   },
-  };
-  </script>
-  
+  created() {
+    this.fetchRecipeDetails();
+  },
+  methods: {
+    async fetchRecipeDetails() {
+      const recipeId = this.$route.params.recipeId; // Extract the recipeId from the URL
+      this.title = this.$route.params.title;
+      try {
+        if (this.title === "Private Recipes") {
+          const response = await axios.get(`http://127.0.0.1:80/users/private_recipe_info/${recipeId}`);
+          this.recipe = response.data;
+        } else if (this.title === "Family Recipes") {
+          const response = await axios.get(`http://127.0.0.1:80/users/family_recipe_info/${recipeId}`);
+          this.recipe = response.data;
+        } else {
+          const response = await axios.get(`http://127.0.0.1:80/recipes/fullinfo/${recipeId}`); // Fetch recipe details
+          this.recipe = response.data;
+        }
+
+        // Update imageSrc after fetching recipe details
+        if (this.title === "Private Recipes" || this.title === "Family Recipes") {
+          this.imageSrc = 'http://127.0.0.1:80' + this.recipe.image;
+          console.log(this.imageSrc)
+        } else {
+          this.imageSrc = this.recipe.image;
+          
+        }
+      } catch (error) {
+        console.error("Error fetching recipe details:", error);
+      }
+    },
+  },
+  computed: {
+    ingredientsToDisplay() {
+      if (this.title === "Private Recipes" || this.title === "Family Recipes") {
+        return this.recipe.ingredients || [];
+      }
+      return this.recipe.extendedIngredients || [];
+    },
+  },
+};
+</script>
+
  <style scoped>
   .recipe-details {
     padding: 30px;

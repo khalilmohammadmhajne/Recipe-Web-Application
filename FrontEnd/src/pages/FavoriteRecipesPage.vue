@@ -16,6 +16,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.title {
+  text-align: center;
+  margin: 0;
+  padding-top: 20px; /* Adjust the padding as needed */
+}
 .RandomRecipes {
   margin: 10px 0 10px;
 }

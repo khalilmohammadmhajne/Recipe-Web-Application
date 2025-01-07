@@ -6,7 +6,7 @@
     <div id="Search">
     <br>
   <table>   <tr >
-      <td style="width:80%" >
+      <td style="width:60%" >
       <input type="text" placeholder="Find a Recipe" id="SearchBar" v-model="query">
        </td>
        <td style="width:20%">

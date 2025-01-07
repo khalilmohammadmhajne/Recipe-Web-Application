@@ -1,30 +1,53 @@
 <template>
   <div class="container">
     <!-- Search Bar Section -->
-    <div id="SearhcBar" style="text-align:center">
-      <input type="text" id="mysearch" placeholder="Find a Recipe" v-model="data" />
-      <button style="margin: 0" id="mybutton" @click="Search">Search</button>
+    <div
+      id="SearhcBar"
+      :class="{ blur: !$root.store.username }"
+      style="text-align:center"
+    >
+      <input
+        type="text"
+        id="mysearch"
+        placeholder="Find a Recipe"
+        v-model="data"
+        :disabled="!$root.store.username"
+      />
+      <button
+        style="margin: 0"
+        id="mybutton"
+        @click="Search"
+        :disabled="!$root.store.username"
+      >
+        Search
+      </button>
       <br />
-      <a href="#/search">Advanced Search</a>
+      <a
+        href="#/search"
+        :class="{ 'disabled-link': !$root.store.username }"
+        :disabled="!$root.store.username"
+      >
+        Advanced Search
+      </a>
     </div>
 
     <div class="sections">
       <!-- Explore Section -->
-      <div class="explore-section">
-        <h3>Explore this Recipes</h3>
+      <div v-if="$root.store.username" class="explore-section">
+        <h3 class="section-title">Explore Recipes</h3>
         <RecipePreviewList title="Random Recipes" class="RandomRecipes" />
       </div>
 
       <!-- Last Watched Section -->
       <div v-if="$root.store.username" class="last-watched-section">
-        <h3>Last Watched Recipes</h3>
+        <h3 class="section-title">Last Watched Recipes</h3>
         <RecipePreviewList title="Last Watched Recipes" />
       </div>
 
       <!-- Login Prompt Section (for unauthenticated users) -->
       <div v-if="!$root.store.username" class="login-section">
-        <div class="box overlay">
-          <LoginPage />
+        <div class="box-overlay">
+          <LoginPage class="login-window" />
         </div>
         <div>
           <RecipePreviewList title="Random Recipes" class="blur" />
@@ -101,29 +124,47 @@ a:hover {
   color: white;
 }
 
-.explore-section,
+
 .last-watched-section {
   padding: 20px;
 }
 
 .explore-section {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column; /* Arrange children vertically */
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  padding: 2rem; /* Add some space around the content */
+  text-align: center;
+}
+
+
+.section-title {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center; /* Ensures the heading itself is centered */
 }
 
 .login-section {
   position: relative;
+  height: 100vh;
 }
 
-.box {
-  width: 100%;
-  height: 50%;
+.box-overlay {
+  width: 40%;
+  height: 40%;
   position: absolute;
+  top: 40%;
+  left: 50%;
+  margin-top: -25%;  /* Adjust half of the height to center vertically */
+  margin-left: -20%; /* Adjust half of the width to center horizontally */
   opacity: 0.7;
-}
-
-.overlay {
-  z-index: 9;
-  background: rgba(42, 43, 42, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 15;
+  background: rgb(15, 15, 15);
 }
 
 .blur {
@@ -134,6 +175,26 @@ a:hover {
 ::v-deep .blur .recipe-preview {
   pointer-events: none;
   cursor: default;
+}
+
+#SearhcBar.blur {
+  pointer-events: none;
+}
+
+#SearhcBar.blur input,
+#SearhcBar.blur button {
+  cursor: not-allowed;
+}
+
+#SearhcBar.blur a {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.disabled-link {
+  pointer-events: none;
+  cursor: not-allowed;
+  color: grey;  /* Optional: You can change the link color when disabled */
 }
 
 /* Adjust layout for smaller screens */

@@ -84,12 +84,15 @@ router.get('/favorites', async (req,res,next) => {
 /* This path gets body with recipe details and save this recipe in the privates list of the logged-in user */
  router.post('/privates', upload.single('recipe-image'), async (req,res,next) => {
   try{
+    console.log('here')
+    console.log(`/images/${req.file.filename}`)
     if (!req.file) {
       return res.status(500).send("file is not found" )
     }
+    
+    
     const user_id = req.session.user_id;
-    // const image = req.file.buffer.toString('base64');
-    const image = 'test';
+    const imageUrl = `/images/${req.file.filename}`;
     const title = req.body.title;
     const minutes = req.body.minutes;
     const vegan = req.body.vegan;
@@ -97,10 +100,11 @@ router.get('/favorites', async (req,res,next) => {
     const gluten = req.body.gluten;
     const ingredients =req.body.ingredients;
     const instructions = req.body.instructions;
-    if(!image || !title || !minutes || !vegan || !vegetarian || !gluten || !ingredients || !instructions){
+    
+    if(!imageUrl || !title || !minutes || !vegan || !vegetarian || !gluten || !ingredients || !instructions){
         throw { status: 400, message: "Bad Request" };
     }
-    await user_utils.addPrivateRecipe(user_id,image,title,minutes,vegan,vegetarian,gluten,ingredients,instructions);
+    await user_utils.addPrivateRecipe(user_id,imageUrl,title,minutes,vegan,vegetarian,gluten,ingredients,instructions);
     res.status(201).send("The private Recipe was added successfully");
     } catch(error){
     next(error);
@@ -140,8 +144,8 @@ router.get("/private_recipe_info/:recipeId", async (req, res, next) => {
   try {
     const user_id = req.session.user_id
     const recipe_id = req.params.recipeId
-    console.log('pr')
     const recipe = await user_utils.getPrivateRecipeFullinfo(user_id, recipe_id);
+    console.log(recipe)
     res.status(200).send(recipe);
   } catch (error) {
     next(error);
