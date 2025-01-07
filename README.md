@@ -30,6 +30,6 @@ To get started, clone this repository and follow the setup instructions below.
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/recipe-platform.git](https://github.com/khalilmohammadmhajne/Recipe-Web-Application.git)
+   https://github.com/khalilmohammadmhajne/Recipe-Web-Application.git
 
 
