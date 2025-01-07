@@ -232,7 +232,7 @@ router.get('/watched',async(req,res,next)=>{
   try{
     const user_id = req.session.user_id;
     const all_watched = await user_utils.getWatchedRecipes(user_id);
-    console.log(all_watched)
+    console.log('all_watched', all_watched)
     let lst=[]
     for (let i=all_watched.length-1 ; i>= 0;i--)
     {
@@ -242,6 +242,7 @@ router.get('/watched',async(req,res,next)=>{
         lst.push(recipeId)
       }
     }
+    
     let result =[]
     for (let i = 0 ; i<lst.length; i++){
       result.push(await recipe_utils.getRecipeDetails(lst[i]))
