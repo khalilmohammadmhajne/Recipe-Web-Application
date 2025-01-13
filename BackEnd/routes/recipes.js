@@ -18,9 +18,8 @@ router.get("/fullinfo/:recipeId", async (req, res, next) => {
   try {
     const recipe_id = req.params.recipeId
     const user_id= req.session.user_id
-    await user_utils.addWatchedRecipes(user_id,recipe_id)
+    // await user_utils.addWatchedRecipes(user_id,recipe_id)
     const recipe = await recipes_utils.getRecipeFullinfo(recipe_id);
-    console.log(recipe)
     res.send(recipe);
   } catch (error) {
     next(error);

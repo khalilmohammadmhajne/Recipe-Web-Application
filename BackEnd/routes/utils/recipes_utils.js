@@ -7,13 +7,20 @@ const api_domain = "https://api.spoonacular.com/recipes";
  */
 
 async function getRecipeInformation(recipe_id) {
-    return await axios.get(`${api_domain}/${recipe_id}/information`, {
+    try {
+      const response = await axios.get(`${api_domain}/${recipe_id}/informationx`, {
         params: {
-            includeNutrition: false,
-            apiKey: process.env.spooncular_apiKey
+          includeNutrition: false,
+          apiKey: process.env.spooncular_apiKey
         }
-    });
-}
+      });
+      return response;
+    } catch (error) {
+      console.error("Error fetching recipe information:", error.response.data.message);
+      throw error;
+    }
+  }
+  
 
 async function getRecipeDetails(recipe_id) {
     let recipe_info = await getRecipeInformation(recipe_id);

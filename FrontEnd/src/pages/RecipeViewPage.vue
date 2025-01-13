@@ -89,7 +89,6 @@ export default {
         // Update imageSrc after fetching recipe details
         if (this.title === "Private Recipes" || this.title === "Family Recipes") {
           this.imageSrc = 'http://127.0.0.1:80' + this.recipe.image;
-          console.log(this.imageSrc)
         } else {
           this.imageSrc = this.recipe.image;
           

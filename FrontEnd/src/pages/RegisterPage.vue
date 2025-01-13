@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1 class="title">Register</h1>
-    <b-form @submit.prevent="onRegister" @reset.prevent="onReset">
+    <b-form @submit.prevent="onRegister" >
       <b-form-group
         id="input-group-username"
         label-cols-sm="3"
@@ -158,7 +158,6 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
-      <b-button type="reset" variant="danger">Reset</b-button>
       <b-button
         type="submit"
         variant="primary"
@@ -180,10 +179,6 @@
     >
       Register failed: {{ form.submitError }}
     </b-alert>
-    <!-- <b-card class="mt-3 md-3" header="Form Data Result">
-      <pre class="m-0"><strong>form:</strong> {{ form }}</pre>
-      <pre class="m-0"><strong>$v.form:</strong> {{ $v.form }}</pre>
-    </b-card> -->
   </div>
 </template>
 
@@ -287,27 +282,14 @@ export default {
       console.log("register method go");
       this.Register();
     },
-    onReset() {
-      this.form = {
-        username: "",
-        firstName: "",
-        lastName: "",
-        country: null,
-        password: "",
-        confirmedPassword: "",
-        email: ""
-      };
-      this.$nextTick(() => {
-        this.$v.$reset();
-      });
-    }
   }
 };
 </script>
+
 <style lang="scss" scoped>
 .container {
   max-width: 400px;
-  padding-top: 100px;
+  margin-top: 40px;
   position: absolute;
   top: 50%;
   left: 50%;

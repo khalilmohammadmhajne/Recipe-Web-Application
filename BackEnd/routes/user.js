@@ -54,7 +54,6 @@ router.post('/favorites', async (req,res,next) => {
       throw { status: 400, message: "Bad Request" };
     }
     const exit_code = await user_utils.removefromFavorite(user_id,recipe_id);
-    console.log(exit_code)
     if(exit_code.affectedRows == 0){
       res.status(200).send("There is no private recipe with recipeId value that you sent");
     }
@@ -84,7 +83,6 @@ router.get('/favorites', async (req,res,next) => {
 /* This path gets body with recipe details and save this recipe in the privates list of the logged-in user */
  router.post('/privates', upload.single('recipe-image'), async (req,res,next) => {
   try{
-    console.log('here')
     console.log(`/images/${req.file.filename}`)
     if (!req.file) {
       return res.status(500).send("file is not found" )
@@ -145,7 +143,6 @@ router.get("/private_recipe_info/:recipeId", async (req, res, next) => {
     const user_id = req.session.user_id
     const recipe_id = req.params.recipeId
     const recipe = await user_utils.getPrivateRecipeFullinfo(user_id, recipe_id);
-    console.log(recipe)
     res.status(200).send(recipe);
   } catch (error) {
     next(error);
@@ -158,7 +155,6 @@ router.get("/family_recipe_info/:recipeId", async (req, res, next) => {
     const user_id = req.session.user_id
     const recipe_id = req.params.recipeId
     const recipe = await user_utils.getFamilyRecipeFullinfo(user_id, recipe_id);
-    console.log("family :" , recipe)
     res.status(200).send(recipe);
   } catch (error) {
     next(error);
@@ -203,7 +199,6 @@ router.get('/familyrecipes', async (req,res,next) => {
   try{
     const user_id = req.session.user_id;
     const result = await user_utils.getFamilyRecipes(user_id);
-    console.log(result)
     res.status(200).send(result);
   } catch(error){
     next(error); 
@@ -232,7 +227,6 @@ router.get('/watched',async(req,res,next)=>{
   try{
     const user_id = req.session.user_id;
     const all_watched = await user_utils.getWatchedRecipes(user_id);
-    console.log('all_watched', all_watched)
     let lst=[]
     for (let i=all_watched.length-1 ; i>= 0;i--)
     {
@@ -245,13 +239,70 @@ router.get('/watched',async(req,res,next)=>{
     
     let result =[]
     for (let i = 0 ; i<lst.length; i++){
-      result.push(await recipe_utils.getRecipeDetails(lst[i]))
+      // result.push(await recipe_utils.getRecipeDetails(lst[i]))
     }
-    console.log(result)
-    res.status(200).send(result);
+    res.status(200).send(getResult().slice(0,3));
+
   } catch(error){
     next(error); 
   }
 });
+
+function getResult()
+{
+
+return [
+  {
+      "id": 661531,
+      "title": "Steak with lemon and capers",
+      "readyInMinutes": 45,
+      "image": "https://img.spoonacular.com/recipes/661531-556x370.jpg",
+      "popularity": 9,
+      "vegan": false,
+      "vegetarian": false,
+      "glutenFree": false
+  },
+  {
+      "id": 1096025,
+      "title": "Steak Salad with Chimichurri Sauce",
+      "readyInMinutes": 30,
+      "image": "https://img.spoonacular.com/recipes/1096025-556x370.jpg",
+      "popularity": 1,
+      "vegan": false,
+      "vegetarian": false,
+      "glutenFree": true
+  },
+  {
+      "id": 661522,
+      "title": "Steak With Blue Cheese Sherry Sauce",
+      "readyInMinutes": 45,
+      "image": "https://img.spoonacular.com/recipes/661522-556x370.jpg",
+      "popularity": 2,
+      "vegan": false,
+      "vegetarian": false,
+      "glutenFree": true
+  },
+  {
+      "id": 661510,
+      "title": "Steak Salad With Roasted Potatoes and Fennel",
+      "readyInMinutes": 45,
+      "image": "https://spoonacular.com/recipeImages/661510-556x370.jpg",
+      "popularity": 1,
+      "vegan": false,
+      "vegetarian": false,
+      "glutenFree": true
+  },
+  {
+      "id": 661500,
+      "title": "Steak And Pepper Rounds With Rose Horseradish Garlic Creme Sauce",
+      "readyInMinutes": 45,
+      "image": "https://spoonacular.com/recipeImages/661500-556x370.jpg",
+      "popularity": 3,
+      "vegan": false,
+      "vegetarian": false,
+      "glutenFree": false
+  }
+]
+}
 
 module.exports = router;

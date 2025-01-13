@@ -27,17 +27,8 @@
         <div class="card">
           <RecipePreview class="recipe-preview" :recipe="recipe" :title="title" />
           <div class="card-actions">
-            <!-- Add to Favorites -->
-            <template v-if="['Random Recipes', 'Search Result', 'Last Watched Recipes'].includes(title)">
-              <b-icon
-                class="add-fav-icon"
-                :icon="isFavorite ? 'star-fill' : 'star'"
-                :style="{ color: isFavorite ? 'orange' : 'gray' }"
-                @click="handleFavorite(recipe.id)"
-              ></b-icon>
-            </template>
-            <!-- Delete Recipe -->
-            <template v-else>
+            <!-- Delete Recipe Icon -->
+            <template v-if="['Family Recipes', 'Favorite Recipes', 'Private Recipes'].includes(title)">
               <img
                 v-b-modal.modal-1
                 src="../assets/garbage.png"
@@ -106,20 +97,31 @@ export default {
     showAlert() {
       this.dismissCountDown = this.dismissSecs;
     },
-    handleOk() {
-      const deleteHandlers = {
-        "Favorite Recipes": this.deleteFavoriteRecipes,
-        "Private Recipes": this.deletePrivateRecipes,
-        "Family Recipes": this.deleteFamilyRecipes,
-      };
-      deleteHandlers[this.title]?.(this.toDelete).then(this.forceRerender);
+    async handleOk(){
+        if (this.title == 'Random Recipes'){
+          this.deleteFavoriteRecipes(this.toDelete)
+          this.getFavoriteRecipes()
+        }
+        if (this.title == 'Private Recipes'){
+          await this.deletePrivateRecipes(this.toDelete)
+          await this.getPrivateRecipes()
+        }
+        if (this.title == 'Favorite Recipes'){
+          await this.deleteFavoriteRecipes(this.toDelete)
+          await this.getFavoriteRecipes()
+        }
+        if (this.title == 'Family Recipes'){
+          await this.deleteFamilyRecipes(this.toDelete)
+          await this.getFamilyRecipes()
+        }
+        await this.forceRerender()
+        
     },
     setDelete(recipeId) {
       this.toDelete = recipeId;
     },
     async forceRerender() {
       this.renderComponent = false;
-      await this.$nextTick();
       this.renderComponent = true;
     },
     handleFavorite(recipeId) {
@@ -129,7 +131,6 @@ export default {
     async postFavoriteRecipes(recipeId) {
       try {
         await axios.post("/users/favorites", { recipeId });
-        this.isFavorite = true;
       } catch (error) {
         console.error(error);
       }
@@ -220,25 +221,25 @@ export default {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 300px; /* Ensure consistency in card width */
+  max-width: 300px; 
 }
 
 .recipe-preview {
   width: 100%;
-  aspect-ratio: 16 / 9; /* Enforce a consistent aspect ratio */
+  aspect-ratio: 16 / 9;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* Crop any overflow content */
-  border-radius: 8px; /* Optional: rounded corners */
-  background-color: #f9f9f9; /* Placeholder background */
+  overflow: hidden; 
+  border-radius: 8px; 
+  background-color: #f9f9f9; 
   margin-bottom: 10px;
 }
 
 .recipe-preview img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Ensure the image fits within the container */
+  object-fit: contain; 
 }
 
 .card-actions {

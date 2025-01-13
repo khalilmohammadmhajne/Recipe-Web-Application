@@ -221,6 +221,7 @@ export default {
       async forceRerender() {
         this.renderComponent = false;
         this.$nextTick(() => {
+          console.log(this.recip)
           this.renderComponent = true;
         });
         
@@ -289,11 +290,10 @@ export default {
         fd.append('instructions',JSON.stringify(this.instructions))
        
         try {
-        const response = await this.axios.post(
+        await this.axios.post(
           "/users/privates",
           fd,
           { headers: { "Content-Type": "multipart/form-data"}}
-          
         );
       } catch (err) {
         console.log(err.response);
@@ -308,7 +308,7 @@ export default {
 .title {
   text-align: center;
   margin: 0;
-  padding-top: 20px; /* Adjust the padding as needed */
+  padding-top: 20px;
 }
 
 .col{

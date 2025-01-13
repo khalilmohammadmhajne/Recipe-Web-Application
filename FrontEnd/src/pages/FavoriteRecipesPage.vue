@@ -19,13 +19,13 @@ export default {
 .title {
   text-align: center;
   margin: 0;
-  padding-top: 20px; /* Adjust the padding as needed */
+  padding-top: 20px;
 }
 .RandomRecipes {
   margin: 10px 0 10px;
 }
 .blur {
-  -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
+  -webkit-filter: blur(5px);
   filter: blur(2px);
 }
 ::v-deep .blur .recipe-preview {

@@ -54,27 +54,27 @@ export default {
   width: 100%;
   position: relative;
   padding: 0;
-  overflow: hidden; /* Prevent overflow issues */
-  border-radius: 8px; /* Optional: Add rounded corners */
-  text-decoration: none; /* Remove link styling */
+  overflow: hidden;
+  border-radius: 8px; 
+  text-decoration: none; 
 }
 
 .recipe-body {
   width: 100%;
   position: relative;
-  aspect-ratio: 16 / 9; /* Maintain a consistent aspect ratio */
+  aspect-ratio: 16 / 9; 
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* Ensure no content overflows */
-  background-color: #f9f9f9; /* Placeholder for image loading */
+  overflow: hidden; 
+  background-color: #d1caca; 
 }
 
 .recipe-image {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensure images fill the container without distortion */
+  object-fit: cover;
   transition: opacity 0.3s ease;
 }
 
@@ -87,8 +87,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay */
-  opacity: 0; /* Hidden by default */
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
   transition: opacity 0.3s ease;
 }
 
@@ -100,10 +100,10 @@ export default {
 }
 
 .recipe-preview:hover .recipe-hover {
-  opacity: 1; /* Show the overlay on hover */
+  opacity: 1;
 }
 
 .recipe-preview:hover .recipe-image {
-  opacity: 0.7; /* Dim the image slightly on hover */
+  opacity: 0.7;
 }
 </style>

@@ -15,7 +15,6 @@ router.post("/Register", async (req, res, next) => {
       email: req.body.email,
       //profilePic: req.body.profilePic
     }
-    console.log(user_details)
     if (!user_details.username || !user_details.firstname || !user_details.lastname 
     || !user_details.country   || !user_details.password  || !user_details.email){
       throw { status: 400, message: "Bad Request" };
