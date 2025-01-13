@@ -12,21 +12,39 @@
         
         <!-- Recipe Information -->
         <div class="recipe-info">
-          <p><strong>Preparation Time:</strong> {{ recipe.readyInMinutes }} minutes</p>
+          <div class="info-item">
+            <span class="info-title">Ready in</span>
+            <span class="info-value">{{ recipe.readyInMinutes }} minutes</span>
+          </div>
           
           <!-- Dietary Preferences -->
-          <p v-if="recipe.vegan">For Vegan</p>
-          <p v-if="recipe.vegetarian">For Vegetarian</p>
-          <p v-if="recipe.glutenFree">Gluten-Free</p>
+          <div class="info-item">
+            <span class="info-title">For Vegan</span>
+            <span class="info-value">{{ recipe.vegan ? 'Yes' : 'No' }}</span>
+          </div>
+          <div class="info-item" >
+            <span class="info-title">For Vegetarian</span>
+            <span class="info-value">{{ recipe.vegetarian ? 'Yes' : 'No' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-title">Gluten-Free</span>
+            <span class="info-value">{{ recipe.glutenFree ? 'Yes' : 'No' }}</span>
+          </div>
           
           <!-- Owner and Custom Time -->
-          <p v-if="recipe.owner"><strong>Owner:</strong> {{ recipe.owner }}</p>
-          <p v-if="recipe.custom_time"><strong>Custom Time:</strong> {{ recipe.custom_time }}</p>
+          <div class="info-item" v-if="recipe.owner">
+            <span class="info-title">Owner</span>
+            <span class="info-value">{{ recipe.owner }}</span>
+          </div>
+          <div class="info-item" v-if="recipe.custom_time">
+            <span class="info-title">Custom Time</span>
+            <span class="info-value">{{ recipe.custom_time }}</span>
+          </div>
         </div>
         
         <!-- Ingredients Section -->
         <div class="ingredients">
-          <p><strong>Ingredients:</strong></p>
+          <p><strong>Ingredients</strong></p>
           <ul>
             <li v-for="ingredient in ingredientsToDisplay" :key="ingredient.id">
               {{ ingredient.original || ingredient.ingrediant }}
@@ -36,7 +54,7 @@
         
         <!-- Instructions Section -->
         <div class="instructions">
-          <p><strong>Instructions:</strong></p>
+          <p><strong>Instructions</strong></p>
           
           <!-- Show list for Private or Family Recipes -->
           <ul v-if="title === 'Private Recipes' || title === 'Family Recipes'">
@@ -109,87 +127,135 @@ export default {
 };
 </script>
 
- <style scoped>
+<style scoped>
+/* General container styling */
+.recipe-details {
+  padding: 40px;
+  background-color: #f8f9fa;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Recipe title styling */
+.recipe-title {
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 25px;
+  line-height: 1.3;
+}
+
+/* Recipe info section with grid layout */
+.recipe-info {
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+  color: #555;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr; /* Four equal columns layout */
+  /* gap: 15px; */
+  text-align: center;
+  align-items: center;
+  justify-items: start;
+}
+
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Ensure it takes full width of the grid */
+  background-color: #e3f2fd; /* Light blue background */
+  padding: 10px 15px;
+  border-radius: 10px; /* Rounded corners */
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.info-title {
+  font-weight: 600;
+  color: #1565c0;
+  margin-bottom: 5px;
+}
+
+.info-value {
+  color: #555;
+  font-size: 1rem;
+}
+
+/* Styling for ingredient and instruction lists */
+.ingredients ul,
+.instructions ul {
+  list-style-type: disc;
+  padding-left: 25px;
+  text-align: left;
+  margin: 20px auto;
+  width: fit-content;
+}
+
+.ingredients li,
+.instructions li {
+  font-size: 1.15rem;
+  color: #444;
+  margin-bottom: 12px;
+}
+
+/* Styling for paragraphs in ingredients and instructions */
+.ingredients p,
+.instructions p {
+  font-size: 1.15rem;
+  color: #444;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+/* Image styling */
+.recipe-image {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+
+/* Flexbox utility classes */
+.d-flex {
+  display: flex;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+/* Media Queries for responsiveness */
+@media only screen and (max-width: 768px) {
   .recipe-details {
-    padding: 30px;
-    background-color: #ced7db;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    text-align: center; /* Centers the text inside the recipe details */
+    padding: 20px;
   }
 
   .recipe-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #1c1a1a;
+    font-size: 2.2rem;
   }
 
   .recipe-info {
-    margin-bottom: 20px;
-    font-size: 1.2rem;
-    color: #262525;
-    text-align: center; /* Center align the text */
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center align the elements within the container */
-  }
-
-
-  .ingredients ul,
-  .instructions ul {
-    list-style-type: disc; 
-    padding-left: 20px; 
-    text-align: left; 
-    margin: 0 auto;
-    display: block; 
-    width: fit-content; 
+    grid-template-columns: 1fr; /* Switch to one column layout on small screens */
+    font-size: 1rem;
   }
 
   .ingredients li,
-  .instructions li {
-    font-size: 1.1rem;
-    color: #191919;
-    margin-bottom: 10px;
-  }
-
+  .instructions li,
   .ingredients p,
   .instructions p {
-    font-size: 1.1rem;
-    color: #191919;
-    margin-bottom: 10px;
-  }
-
-  
-
-  /* Ensure the container is at least 100vh to cover the full height of the screen */
-  .d-flex {
-    display: flex;
+    font-size: 1rem;
   }
   
-  /* For centering the content vertically and horizontally */
-  .justify-content-center {
-    justify-content: center;
+  .recipe-image {
+    max-width: 100%;
   }
-
-  .align-items-center {
-    align-items: center;
-  }
-
-  /* Responsive Design */
-  @media only screen and (max-width: 768px) {
-    .recipe-details {
-      padding: 20px;
-    }
-
-    .recipe-title {
-      font-size: 2rem;
-    }
-
-    .recipe-info,
-    .ingredients li,
-    .instructions p {
-      font-size: 1rem;
-    }
-  }
+}
 </style>

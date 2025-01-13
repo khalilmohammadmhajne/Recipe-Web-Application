@@ -44,11 +44,9 @@ app.get("/", (_, res) => {
 
 // Middleware to handle user sessions
 app.use(async (req, _, next) => {
-  console.log(req.session)
   // if (req.session && req.session.user_id) {
   //   try {
   //     const users = await DButils.execQuery("SELECT user_id FROM USERS");
-  //     console.log(users)
   //     if (users.find((user) => user.user_id === req.session.user_id)) {
   //       req.user_id = req.session.user_id;
   //     }
