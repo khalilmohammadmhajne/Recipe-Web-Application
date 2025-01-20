@@ -1,46 +1,19 @@
 <template>
-  <b-container class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <b-container style="min-height: 100vh;">
     <b-row class="justify-content-center w-100">
       <b-col md="8" class="recipe-details">
-          <img 
-          :src="imageSrc" 
-          class="recipe-image" 
-          alt="Recipe image" 
-        />
+          
         <!-- Recipe Title -->
         <h1 class="recipe-title">{{ recipe.title }}</h1>
         
-        <!-- Recipe Information -->
-        <div class="recipe-info">
-          <div class="info-item">
-            <span class="info-title">Ready in</span>
-            <span class="info-value">{{ recipe.readyInMinutes }} minutes</span>
-          </div>
-          
-          <!-- Dietary Preferences -->
-          <div class="info-item">
-            <span class="info-title">For Vegan</span>
-            <span class="info-value">{{ recipe.vegan ? 'Yes' : 'No' }}</span>
-          </div>
-          <div class="info-item" >
-            <span class="info-title">For Vegetarian</span>
-            <span class="info-value">{{ recipe.vegetarian ? 'Yes' : 'No' }}</span>
-          </div>
-          <div class="info-item">
-            <span class="info-title">Gluten-Free</span>
-            <span class="info-value">{{ recipe.glutenFree ? 'Yes' : 'No' }}</span>
-          </div>
-          
-          <!-- Owner and Custom Time -->
-          <div class="info-item" v-if="recipe.owner">
-            <span class="info-title">Owner</span>
-            <span class="info-value">{{ recipe.owner }}</span>
-          </div>
-          <div class="info-item" v-if="recipe.custom_time">
-            <span class="info-title">Custom Time</span>
-            <span class="info-value">{{ recipe.custom_time }}</span>
-          </div>
-        </div>
+
+        <img 
+          :src="imageSrc" 
+          class="recipe-image" 
+          alt="Recipe image" 
+          />
+        
+
         
         <!-- Ingredients Section -->
         <div class="ingredients">
@@ -66,6 +39,11 @@
           <!-- Show a single paragraph for other recipes -->
           <p v-else v-html="recipe.instructions"></p>
         </div>
+
+        <div>
+          <p class="more-reipes">More {{title}}</p>
+          <RecipePreviewList title="Random Recipes" class="RandomRecipes" />
+        </div>
       </b-col>
     </b-row>
   </b-container>
@@ -75,9 +53,13 @@
   
 <script>
 import axios from "axios";
+import RecipePreviewList from "../components/RecipePreviewList.vue";
 
 export default {
   name: "RecipeViewPage",
+  components:{
+    RecipePreviewList
+  },
   data() {
     return {
       recipe: {},
@@ -133,20 +115,24 @@ export default {
   padding: 40px;
   background-color: #f8f9fa;
   border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  box-shadow: 0 4px 12px #162a5f;
+  text-align: left; /* Align content to the left globally */
   max-width: 900px;
-  margin: 0 auto;
+  margin: 5%;
 }
 
 /* Recipe title styling */
 .recipe-title {
-  font-size: 2.8rem;
-  font-weight: 600;
-  color: #333;
+  font-size: 6rem;
+  font-weight: bold;
+  color: #162a5f;
   margin-bottom: 25px;
-  line-height: 1.3;
+  display: block; /* Ensures it behaves like a block element */
+  text-align: center; /* Centers the text within the element */
+  margin-left: auto; /* Centers the block horizontally */
+  margin-right: auto; /* Centers the block horizontally */
 }
+
 
 /* Recipe info section with grid layout */
 .recipe-info {
@@ -155,107 +141,83 @@ export default {
   color: #555;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr; /* Four equal columns layout */
-  /* gap: 15px; */
   text-align: center;
   align-items: center;
   justify-items: start;
 }
 
-
 .info-item {
   display: flex;
   flex-direction: column;
-  width: 100%; /* Ensure it takes full width of the grid */
-  background-color: #e3f2fd; /* Light blue background */
-  padding: 10px 15px;
+  width: 90%; /* Ensure it takes full width of the grid */
+  background-color: #162a5f77;
+  padding: 10px 10px;
   border-radius: 10px; /* Rounded corners */
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  box-shadow: 0 2px 4px #162a5fa1; 
 }
 
 .info-title {
-  font-weight: 600;
-  color: #1565c0;
-  margin-bottom: 5px;
+  font-size: 15px;
+  color: rgb(5, 23, 82);
+  font-weight: bold;
 }
 
 .info-value {
-  color: #555;
+  color: #ffffff;
   font-size: 1rem;
 }
 
 /* Styling for ingredient and instruction lists */
+.ingredients,
+.instructions {
+  text-align: left; /* Align text to the left */
+  margin: 20px auto;
+  width: 100%; /* Ensure they take up the full width */
+}
+
 .ingredients ul,
 .instructions ul {
-  list-style-type: disc;
-  padding-left: 25px;
-  text-align: left;
-  margin: 20px auto;
-  width: fit-content;
+  list-style-type: disc; /* Bullet points */
+  padding-left: 40px; /* Indent from the left */
+  margin: 0; /* Remove auto margins */
 }
 
 .ingredients li,
 .instructions li {
-  font-size: 1.15rem;
-  color: #444;
-  margin-bottom: 12px;
+  font-size: 1.6rem; /* Adjust font size */
+  color: #162a5f;
+  margin-bottom: 10px;
 }
 
-/* Styling for paragraphs in ingredients and instructions */
 .ingredients p,
 .instructions p {
-  font-size: 1.15rem;
-  color: #444;
+  font-size: 1.8rem; /* Adjust font size */
+  color: #162a5f;
   margin-bottom: 15px;
-  line-height: 1.6;
+  line-height: 1.6; /* Improve readability */
 }
 
 /* Image styling */
 .recipe-image {
-  width: 100%;
+  width: 50%;
   max-width: 600px;
   height: auto;
   border-radius: 10px;
   margin-bottom: 25px;
+
+  /* Center the image */
+  display: block; /* Makes it a block element */
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Flexbox utility classes */
-.d-flex {
+/* More recipes styling */
+.more-reipes {
+  margin-top: 5%;
   display: flex;
-}
-
-.justify-content-center {
-  justify-content: center;
-}
-
-.align-items-center {
-  align-items: center;
-}
-
-/* Media Queries for responsiveness */
-@media only screen and (max-width: 768px) {
-  .recipe-details {
-    padding: 20px;
-  }
-
-  .recipe-title {
-    font-size: 2.2rem;
-  }
-
-  .recipe-info {
-    grid-template-columns: 1fr; /* Switch to one column layout on small screens */
-    font-size: 1rem;
-  }
-
-  .ingredients li,
-  .instructions li,
-  .ingredients p,
-  .instructions p {
-    font-size: 1rem;
-  }
-  
-  .recipe-image {
-    max-width: 100%;
-  }
+  color: #162a5f;
+  font-weight: bold;
 }
 </style>
+

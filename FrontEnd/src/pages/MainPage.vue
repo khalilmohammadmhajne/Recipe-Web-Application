@@ -14,7 +14,6 @@
         :disabled="!$root.store.username"
       />
       <button
-        style="margin: 0"
         id="mybutton"
         @click="Search"
         :disabled="!$root.store.username"
@@ -34,7 +33,7 @@
     <div class="sections">
       <!-- Explore Section -->
       <div v-if="$root.store.username" class="explore-section">
-        <h3 class="section-title">Explore Recipes</h3>
+        <h3 class="section-title">Explore Our Recipes</h3>
         <RecipePreviewList title="Random Recipes" class="RandomRecipes" />
       </div>
 
@@ -83,67 +82,69 @@ export default {
 .container {
   min-width: 100%;
   margin: 0;
-  padding: 15px;
+  padding: 10px;
 }
 
 #SearhcBar {
-  margin-left: 20%;
+  margin-left: 30%;
   margin-right: 30%;
   height: 3.75rem;
   margin-bottom: 3%;
-  margin-top: 2%;
 }
 
 #mybutton {
   border: none;
   height: 3.4rem;
   background-color: red;
-  margin: 0;
+  margin-left: 5px;
+  border-radius: 3px;
   color: white;
   font-size: 18px;
   letter-spacing: 0.1em;
-  background-color: #66a992;
+  background-color: #162a5f;
 }
 
 #mysearch {
   text-align: center;
   height: 3.5rem;
-  width: 26rem;
-  font-weight: bold;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  color: #162a5f;
+}
+input::placeholder {
+  color: #04195254; // Set the placeholder color
+  opacity: 1; // Optional: Ensure full opacity (default is 0.5 in some browsers)
 }
 
 a {
   margin-right: 16px;
-  color: rgb(245, 245, 245);
+  color: #162a5f80;
   font-weight: 900;
   font: bold 0.75rem/.75rem "Renner", sans-serif;
 }
 
 a:hover {
-  color: white;
+  color: #162a5f;
 }
 
 
-.last-watched-section {
-  padding: 20px;
-}
+// .last-watched-section {
+//   // padding: 20px;
+// }
 
 .explore-section {
   display: flex;
   flex-direction: column; /* Arrange children vertically */
   align-items: center; /* Center horizontally */
   justify-content: center; /* Center vertically */
-  padding: 2rem; /* Add some space around the content */
   text-align: center;
 }
 
 
 .section-title {
-  margin-bottom: 1rem;
   font-size: 1.5rem;
   font-weight: bold;
-  text-align: center; /* Ensures the heading itself is centered */
+  text-align: center; 
+  color: #162a5f;
 }
 
 .login-section {

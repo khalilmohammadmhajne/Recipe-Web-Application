@@ -154,7 +154,7 @@ export default {
     margin-left: 15px;
     margin-bottom: 5px;
 }
-button{background-color: #66a992;;}
+button{background-color: #162a5f;;}
 label {
     font-size: 15px;
     display: inline-block;
@@ -168,7 +168,7 @@ select{
   color:white;
   border-radius: 10px;
   font-size: 15px;
-  background-color: #66a992;
+  background-color: #162a5f;
   font-weight: 600;
   border:none;
 }
@@ -176,10 +176,10 @@ select{
 {
     
     width:22%;
-  background-color: #66a992;
+  background-color: #162a5f;
     letter-spacing: 0.25em;
     font-weight: 700;
-    border-color:#66a992;
+    border-color:#162a5f;
     
 }
 

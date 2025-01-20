@@ -25,19 +25,7 @@
         class="d-flex justify-content-center mb-4"
       >
         <div class="card">
-          <RecipePreview class="recipe-preview" :recipe="recipe" :title="title" />
-          <div class="card-actions">
-            <!-- Delete Recipe Icon -->
-            <template v-if="['Family Recipes', 'Favorite Recipes', 'Private Recipes'].includes(title)">
-              <img
-                v-b-modal.modal-1
-                src="../assets/garbage.png"
-                alt="Delete Recipe"
-                class="delete-icon"
-                @click="setDelete(recipe.id)"
-              />
-            </template>
-          </div>
+          <RecipePreview class="" :recipe="recipe" :title="title" />
         </div>
       </b-col>
     </b-row>
@@ -211,7 +199,7 @@ export default {
 }
 
 .card {
-  background-color: #fff;
+  background-color: #010f35a6;
   border: none;
   margin: 10px;
   padding: 10px;
@@ -278,14 +266,14 @@ export default {
 }
 
 .randomize-button {
-  background-color: #66a992;
+  background-color: #010f35a6;
   border: none;
   color: white;
   padding: 8px 16px;
   border-radius: 8px;
   letter-spacing: 0.2em;
   cursor: pointer;
-  margin: 20px auto;
+  margin-bottom: 20px;
   font-size: 14px;
   text-transform: uppercase;
   transition: background-color 0.3s ease;

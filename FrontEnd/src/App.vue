@@ -1,9 +1,13 @@
 <template>
   <div id="app">
     <nav id="nav">
+      <div id="username">
+          <h3>Hi {{ $root.store.username }}</h3>
+      </div>
+
       <!-- Logo and Navigation Links -->
       <div id="logo">
-        <router-link :to="{ name: 'main' }" class="nav-link">Wasfa Recipes</router-link>
+        <router-link :to="{ name: 'main' }" class="nav-link" id="logo">Wasfa Recipes</router-link>
       </div>
       
       <!-- User Profile Section -->
@@ -13,17 +17,24 @@
           <router-link :to="{ name: 'register' }" class="nav-link">Register</router-link> 
         </span>
         <span v-else>
-          {{ $root.store.username }}
-          <b-dropdown id="dropdown-1" text="Profile" variant="info" class="profile-dropdown">
+          
+          <b-dropdown text="Profile" class="profile-dropdown">
             <b-dropdown-item href="#/users/favorites">Saved Recipes</b-dropdown-item>
             <b-dropdown-item href="#/users/privates">Private Recipes</b-dropdown-item>
             <b-dropdown-item href="#/users/familyrecipes">Family Recipes</b-dropdown-item>
-            <b-dropdown-item-button @click="Logout" class="logout-button">Logout</b-dropdown-item-button>
+            <b-dropdown-item-button @click="Logout">Logout</b-dropdown-item-button>
           </b-dropdown>
         </span>
       </div>
     </nav>
     <router-view />
+    <footer id="footer">
+      <div class="footer-links">
+        <router-link :to="{ name: 'about-us' }" class="footer-link">About Us</router-link>
+        <router-link :to="{ name: 'contact' }" class="footer-link">Contact</router-link>
+        <router-link :to="{ name: 'privacy-policy' }" class="footer-link">Privacy Policy</router-link>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -55,8 +66,11 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #ffffff;
-  background-color: #2c3e50;
+  background-color: #ffffff;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* This ensures footer stays at the bottom */
 }
 
 // Navbar Styles
@@ -64,8 +78,8 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #35495e;
-  padding: 15px 30px;
+  background-color: #898e94;
+  padding: 10px 30px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -74,33 +88,40 @@ export default {
   text-align: center;
 }
 
+#username {
+  font-size: 24px;
+  font-weight: bold;
+  color: #041952;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
 #logo .nav-link {
   font-size: 24px;
   font-weight: bold;
-  color: #ffffff;
+  color: #041952;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 #logo .nav-link:hover {
-  color: #42b983;
+  color: #fdfdfd;
 }
 
 // Navigation Links Styles
 .nav-link {
   font-size: 16px;
-  color: #ffffff;
+  color: #041952;
   text-decoration: none;
   padding: 10px;
   font-weight: 600;
   border-radius: 5px;
   transition: color 0.3s ease, background-color 0.3s ease;
   display: inline-flex;
-  gap: 10px;
 }
 
 .nav-link:hover {
-  color: #42b983;
+  color: #ffffff;
   background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -113,5 +134,36 @@ export default {
 
 .profile-dropdown {
   width: 10rem;
+  color: #041952;
+}
+
+/* Footer Styles */
+#footer {
+  background-color: #898e94;
+  padding: 15px 30px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  margin-top: auto; /* Push the footer to the bottom */
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.footer-link {
+  font-size: 16px;
+  color: #041952;
+  text-decoration: none;
+  padding: 10px;
+  font-weight: 600;
+  border-radius: 5px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 </style>
+

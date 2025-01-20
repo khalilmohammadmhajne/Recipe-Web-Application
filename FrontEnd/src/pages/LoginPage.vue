@@ -137,6 +137,9 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background-color: #162a5f; // Set background color
+  padding: 20px; // Optional: Add padding for better spacing
+  border-radius: 8px; // Optional: Add rounded corners
+  color: white; // Optional: Ensure text is readable on the dark background
 }
-
 </style>
