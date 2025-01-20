@@ -31,6 +31,17 @@
     </div>
 
     <div class="sections">
+
+      <!-- Login Prompt Section (for unauthenticated users) -->
+      <div v-if="!$root.store.username" class="login-section">
+        <div class="box-overlay">
+          <LoginPage class="login-window" />
+        </div>
+        <div>
+          <RecipePreviewList title="Random Recipes" class="blur" />
+        </div>
+      </div>
+      
       <!-- Explore Section -->
       <div v-if="$root.store.username" class="explore-section">
         <h3 class="section-title">Explore Our Recipes</h3>
@@ -43,15 +54,7 @@
         <RecipePreviewList title="Last Watched Recipes" />
       </div>
 
-      <!-- Login Prompt Section (for unauthenticated users) -->
-      <div v-if="!$root.store.username" class="login-section">
-        <div class="box-overlay">
-          <LoginPage class="login-window" />
-        </div>
-        <div>
-          <RecipePreviewList title="Random Recipes" class="blur" />
-        </div>
-      </div>
+      
     </div>
   </div>
 </template>
@@ -89,35 +92,34 @@ export default {
   margin-left: 30%;
   margin-right: 30%;
   height: 3.75rem;
-  margin-bottom: 3%;
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 
 #mybutton {
   border: none;
-  height: 3.4rem;
   background-color: red;
   margin-left: 5px;
   border-radius: 3px;
   color: white;
-  font-size: 18px;
-  letter-spacing: 0.1em;
   background-color: #162a5f;
 }
 
 #mysearch {
   text-align: center;
-  height: 3.5rem;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  color: #162a5f;
+  font-family: "Gill Sans";
+  color: #ffffff;
+  background-color: #162a5f;
+  border-radius: 5px ;
 }
 input::placeholder {
-  color: #04195254; // Set the placeholder color
+  color: #ffffff9c; // Set the placeholder color
   opacity: 1; // Optional: Ensure full opacity (default is 0.5 in some browsers)
 }
 
 a {
   margin-right: 16px;
-  color: #162a5f80;
+  color: #000000;
   font-weight: 900;
   font: bold 0.75rem/.75rem "Renner", sans-serif;
 }
@@ -147,26 +149,24 @@ a:hover {
   color: #162a5f;
 }
 
-.login-section {
-  position: relative;
-  height: 100vh;
-}
+
 
 .box-overlay {
-  width: 40%;
-  height: 40%;
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  margin-top: -25%;  /* Adjust half of the height to center vertically */
-  margin-left: -20%; /* Adjust half of the width to center horizontally */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 40%; 
+  height: 40%; 
   opacity: 0.7;
-  display: flex;
+  display: flex; 
   justify-content: center;
   align-items: center;
   z-index: 15;
-  background: rgb(15, 15, 15);
 }
+
 
 .blur {
   -webkit-filter: blur(5px);
@@ -198,15 +198,4 @@ a:hover {
   color: grey;  /* Optional: You can change the link color when disabled */
 }
 
-/* Adjust layout for smaller screens */
-@media only screen and (max-width: 768px) {
-  #SearhcBar {
-    margin-left: 10%;
-    margin-right: 10%;
-  }
-
-  .container {
-    padding: 10px;
-  }
-}
 </style>
