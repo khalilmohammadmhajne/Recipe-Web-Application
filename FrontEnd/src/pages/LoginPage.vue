@@ -131,14 +131,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
-  max-width: 400px;
-  padding-top: 100px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #162a5f; // Set background color
-  padding: 20px; // Optional: Add padding for better spacing
+  max-width: 30%;
+  margin: auto;
+  background-color: #142249; // Set background color
   border-radius: 8px; // Optional: Add rounded corners
   color: white; // Optional: Ensure text is readable on the dark background
 }

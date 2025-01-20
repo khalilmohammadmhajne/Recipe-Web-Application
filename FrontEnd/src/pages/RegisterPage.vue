@@ -288,11 +288,11 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  max-width: 400px;
-  margin-top: 40px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  max-width: 40%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  background-color: #162a5f; // Set background color
+  border-radius: 8px; // Optional: Add rounded corners
+  color: white; // Optional: Ensure text is readable on the dark background
 }
 </style>

@@ -1,10 +1,14 @@
 <template>
   <div class="container">
-      <h1 class="title">Family Recipes </h1>
       <div>
-        <b-row class="justify-content-center my-4">
-          <b-button v-b-modal.modal-add-recipe variant="primary">Add Family Recipe</b-button>
-        </b-row>
+        <b-row class="d-flex justify-content-between align-items-center my-4">
+        <b-col class="text-left">
+          <h2 class="title">Family Recipes</h2>
+        </b-col>
+        <b-col class="text-right">
+          <b-button v-b-modal.modal-add-recipe>Add Family Recipe</b-button>
+        </b-col>
+      </b-row>
         <b-modal
           id="modal-add-recipe"
           ref="modal"
@@ -349,9 +353,9 @@ export default {
 <style lang="scss" scoped>
 
 .title {
-  text-align: center;
-  margin: 0;
-  padding-top: 20px; 
+  text-align: left;
+  padding-top: 20px;
+  color: #162a5f;
 }
 
 .col{

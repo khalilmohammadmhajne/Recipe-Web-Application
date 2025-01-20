@@ -26,6 +26,24 @@
       >
         <div class="card">
           <RecipePreview class="" :recipe="recipe" :title="title" />
+          <div class="card-actions">
+            <!-- Delete Recipe Icon -->
+            <template v-if="['Family Recipes', 'Favorite Recipes', 'Private Recipes'].includes(title)">
+              <img
+                v-b-modal.modal-1
+                src="../assets/garbage.png"
+                alt="Delete Recipe"
+                class="delete-icon"
+                @click="setDelete(recipe.id)"
+              />
+              <img
+                v-b-modal.modal-1
+                src="../assets/editing.png"
+                alt="Delete Recipe"
+                class="delete-icon"
+              />
+            </template>
+          </div>
         </div>
       </b-col>
     </b-row>

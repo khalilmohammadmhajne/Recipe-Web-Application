@@ -1,10 +1,15 @@
 <template>
   <div class="container">
   <div>
-    <h1 class="title">Private Recipes </h1>
-    <b-row class="justify-content-center my-4">
-      <b-button v-b-modal.modal-prevent-closing variant="primary">Add New Private Recipe</b-button>
+    <b-row class="d-flex justify-content-between align-items-center my-4">
+      <b-col class="text-left">
+        <h2 class="title">Private Recipes</h2>
+      </b-col>
+      <b-col class="text-right">
+        <b-button v-b-modal.modal-prevent-closing>Add New Private Recipe</b-button>
+      </b-col>
     </b-row>
+
     <b-modal
       id="modal-prevent-closing"
       ref="modal"
@@ -16,7 +21,6 @@
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-row>
             <input name ="recipe-image" type="file" @change="onFileSelected" style="margin-left: 30%;"  required/>
-
         </b-row>
         <!--Recipe's Name-->
         <b-row>
@@ -306,10 +310,23 @@ export default {
 <style lang="scss" scoped>
 
 .title {
-  text-align: center;
-  margin: 0;
+  text-align: left;
   padding-top: 20px;
+  color: #162a5f;
 }
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
 
 .col{
   text-align: center;

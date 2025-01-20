@@ -2,7 +2,7 @@
   <div id="app">
     <nav id="nav">
       <div id="username">
-          <h3>Hi {{ $root.store.username }}</h3>
+          <h3 v-if="$root.store.username">Hi {{ $root.store.username }}</h3>
       </div>
 
       <!-- Logo and Navigation Links -->
@@ -30,9 +30,9 @@
     <router-view />
     <footer id="footer">
       <div class="footer-links">
-        <router-link :to="{ name: 'about-us' }" class="footer-link">About Us</router-link>
-        <router-link :to="{ name: 'contact' }" class="footer-link">Contact</router-link>
-        <router-link :to="{ name: 'privacy-policy' }" class="footer-link">Privacy Policy</router-link>
+        <router-link :to="{ name: '' }" class="footer-link">About Us</router-link>
+        <router-link :to="{ name: '' }" class="footer-link">Contact</router-link>
+        <router-link :to="{ name: '' }" class="footer-link">Privacy Policy</router-link>
       </div>
     </footer>
   </div>
