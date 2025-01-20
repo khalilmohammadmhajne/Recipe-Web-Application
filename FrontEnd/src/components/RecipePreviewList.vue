@@ -202,6 +202,68 @@ export default {
         console.error(error);
       }
     },
+    async searchQuery(query,cusine,diet,intol,num,sortFilter)
+    {
+      this.emptyResult=false
+
+      this.recipes=[]
+      let res=[]
+      if(cusine=="ALL")
+      {
+       cusine=undefined
+      }
+       if(diet=="None")
+       {
+       diet=undefined
+      }
+       if(intol=="None")
+       {
+       intol=undefined
+       }
+      
+      try {
+        const response = await this.axios.get(
+           "/recipes/search/",
+          {params:{query:query,cusine:cusine,intolerance:intol,diet:diet,number:num}},
+        );
+
+      if(response.data.length!=0)
+      {
+        for(let i=0;i<response.data.length;i++)
+        {
+          res.push(response.data[i])
+
+        }
+      }
+      else{
+        
+        this.emptyResult=true
+
+      }
+
+
+
+      if(sortFilter=="Default"){
+        
+      }
+      else if(sortFilter=="Prepare Time"){
+      res.sort((a, b) => parseInt(a.readyInMinutes) - parseInt(b.readyInMinutes));
+      }
+      else // Stars
+      {
+      res.sort((a, b) => parseFloat(a.popularity) - parseFloat(b.popularity));
+      }
+
+      
+      this.recipes=res
+      return
+  
+       
+      } catch (error) {
+        console.log(error);
+      }
+
+    },
   },
 };
 </script>
